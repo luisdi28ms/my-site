@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Finger+Paint&family=Turret+Road&display=swap');
 @import "tailwindcss";
 
-
+@theme {
+    --font-fingerpaint: "Finger Paint", sans-serif;
+    --font-turretroad: "Turret Road", sans-serif;
+}
