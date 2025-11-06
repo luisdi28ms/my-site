@@ -177,11 +177,11 @@
 
 	<div class="ctrl-center" id="btns">
 		<!-- Previous Button -->
-		<button id="prev-btn">
+		<button id="prev-btn" style="visibility: hidden;">
 			<i class="fas fa-arrow-circle-left"></i>
 		</button>
 		<!-- Next Button -->
-		<button id="next-btn">
+		<button id="next-btn" style="visibility: visible;">
 			<i class="fas fa-arrow-circle-right"></i>
 		</button>
 
@@ -208,13 +208,17 @@
 
 	function openBook() {
 		book.style.transform = "translateX(50%)";
+		nextBtn.style.visibility = "visible";
+		prevBtn.style.visibility = "visible";
 	}
 
 	function closeBook(isAtBeginning) {
 		if (isAtBeginning) {
 			book.style.transform = "translateX(0%)";
+			prevBtn.style.visibility = "hidden";
 		} else {
 			book.style.transform = "translateX(100%)";
+			nextBtn.style.visibility = "hidden";
 		}
 
 	}
