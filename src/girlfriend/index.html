@@ -16,6 +16,7 @@
 		body {
 			height: 100vh;
 			display: flex;
+			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 
@@ -39,6 +40,10 @@
 			left: 0;
 			perspective: 1500px;
 
+		}
+
+		.ctrl-center {
+			position: relative;
 		}
 
 		.front,
@@ -122,10 +127,6 @@
 </head>
 
 <body>
-	<!-- Previous Button -->
-	<button id="prev-btn">
-		<i class="fas fa-arrow-circle-left"></i>
-	</button>
 
 
 	<!-- Book -->
@@ -171,10 +172,17 @@
 		</div>
 	</div>
 
-	<!-- Next Button -->
-	<button id="next-btn">
-		<i class="fas fa-arrow-circle-right"></i>
-	</button>
+	<div class="ctrl-center" id="btns">
+		<!-- Previous Button -->
+		<button id="prev-btn">
+			<i class="fas fa-arrow-circle-left"></i>
+		</button>
+		<!-- Next Button -->
+		<button id="next-btn">
+			<i class="fas fa-arrow-circle-right"></i>
+		</button>
+
+	</div>
 </body>
 <script defer>
 	// References to DOM Elements
@@ -197,8 +205,6 @@
 
 	function openBook() {
 		book.style.transform = "translateX(50%)";
-		prevBtn.style.transform = "translateX(-180px)";
-		nextBtn.style.transform = "translateX(180px)";
 	}
 
 	function closeBook(isAtBeginning) {
@@ -208,8 +214,6 @@
 			book.style.transform = "translateX(100%)";
 		}
 
-		prevBtn.style.transform = "translateX(0px)";
-		nextBtn.style.transform = "translateX(0px)";
 	}
 
 	function goNextPage() {
