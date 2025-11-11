@@ -6,6 +6,13 @@ const book = document.querySelector("#book");
 const paper1 = document.querySelector("#p1");
 const paper2 = document.querySelector("#p2");
 const paper3 = document.querySelector("#p3");
+const daysTogether = document.querySelector("#days-together");
+
+const today = new Date();
+const firstDay = new Date("2022-12-04");
+const diffInMs = Math.abs(today.getTime() - firstDay.getTime());
+const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+const diffInYears = Math.ceil(diffInDays / 365);
 
 // Event Listener
 prevBtn.addEventListener("click", goPrevPage);
@@ -81,3 +88,5 @@ function goPrevPage() {
 		currentLocation--;
 	}
 }
+
+daysTogether.innerHTML = `It's been ${diffInDays} days (${diffInYears} years) since that day.`;
