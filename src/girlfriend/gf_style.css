@@ -40,7 +40,6 @@ body {
 	top: 0;
 	left: 0;
 	perspective: 1500px;
-
 }
 
 .ctrl-center {
@@ -111,6 +110,13 @@ i {
 	color: gray;
 }
 
+/*Book Cover */
+#f1,
+#b1,
+#f3,
+#b3 {
+	background-color: rgb(46, 88, 73);
+}
 /* Paper stack order */
 #p1 {
 	z-index: 3;
@@ -123,4 +129,15 @@ i {
 #p3 {
 	z-index: 1;
 }
-	
+
+.title {
+            font-family: 'Tangerine', cursive;
+            font-size: 6rem;
+            font-weight: 700;
+            text-align: center;
+            color: #c5a028;
+            letter-spacing: 0.1em;
+            text-transform: none;
+            margin: 20px 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
