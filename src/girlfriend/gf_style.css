@@ -2,6 +2,7 @@
 :root {
   --bg-green: rgb(157, 192, 158);
   --bg-dark-green: rgb(46, 88, 73);
+  --gold: #c5a028;
 }
 
 * {
@@ -114,14 +115,21 @@ i {
 }
 
 /* Book Cover */
-#f1, #b1, #f3, #b3 {
+#f1, #b1, #f8, #b8 {
   background-color: var(--bg-dark-green);
 }
 
 /* Paper stack order */
-#p1 { z-index: 3; }
-#p2 { z-index: 2; }
-#p3 { z-index: 1; }
+#p1 { z-index: 8; }
+#p2 { z-index: 7; }
+#p3 { z-index: 6; }
+#p4 { z-index: 5; }
+#p5 { z-index: 4; }
+#p6 { z-index: 3; }
+#p7 { z-index: 2; }
+#p8 { z-index: 1; }
+
+
 
 /* ——— RESPONSIVE TEXT & PHOTO FIXES (only new/changed part) ——— */
 
@@ -132,12 +140,17 @@ i {
   line-height: 1;
   letter-spacing: 0.02em;
   text-align: center;
-  color: #c5a028;
+  color: var(--gold);
   padding: clamp(2rem, 8vw, 6rem) 0;
   margin: 0;
   text-shadow: 0 2px 8px rgba(0,0,0,0.35);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+#b8 {
+	font-family: cursive;
+	color: var(--gold);
 }
 
 #days-together {
@@ -152,7 +165,7 @@ i {
   word-wrap: break-word;
 }
 
-#photo1 {
+img {
   margin-top: clamp(30px, 10vw, 80px);
   width: 78vw;
   max-width: 340px;             /* never overflows even on tiny phones */
