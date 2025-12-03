@@ -20,9 +20,9 @@ const today = new Date();
 const firstDay = new Date("2022-12-04");
 const diffInMs = Math.abs(today.getTime() - firstDay.getTime());
 const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
-const diffInYears = Math.floor(diffInDays / 365);
+const diffInYears = Math.ceil(diffInDays / 365);
 
-daysTogether.innerHTML = `It's been <strong>${diffInDays}</strong> days<br>(<strong>${diffInYears}</strong> years and counting) since Dec 4, 2022`;
+daysTogether.innerHTML = `It's been <strong>${diffInDays}</strong> days<br>(<strong>${diffInYears}</strong> years) since that day`;
 
 // Business Logic
 let currentLocation = 1;
