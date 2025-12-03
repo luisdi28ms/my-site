@@ -3,11 +3,15 @@
   --bg-green: rgb(157, 192, 158);
   --bg-dark-green: rgb(46, 88, 73);
   --gold: #c5a028;
-  /* Define aspect ratio for the book (Width:Height) */
-  --book-width-mobile: 43vw;
-  --book-height-mobile: 65vw;
-  --book-width-desktop: 400px;
-  --book-height-desktop: 600px;
+  
+  /* ——— SIZING STRATEGY ——— */
+  /* Mobile: Width is 48vw (96vw total when open). Height follows aspect ratio. */
+  --book-width-mobile: 48vw; 
+  --book-height-mobile: 76vw; /* Approx 1.6 aspect ratio */
+  
+  /* Desktop: significantly larger fixed max limits */
+  --book-width-desktop: 550px;
+  --book-height-desktop: 825px;
 }
 
 * {
@@ -19,7 +23,7 @@
 body {
   height: 100vh;
   width: 100vw;
-  overflow: hidden; /* Prevents scrollbars during flip animation */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -35,17 +39,24 @@ body {
 /* Book Container */
 .book {
   position: relative;
-  /* Responsive base size for Mobile */
+  /* Base Mobile Size */
   width: var(--book-width-mobile);
   height: var(--book-height-mobile);
   
-  /* Limits for Desktop */
+  /* Max Limits (Desktop/Large Screens) */
   max-width: var(--book-width-desktop);
   max-height: var(--book-height-desktop);
   
+  /* Safety check: Never exceed 90% of screen height to leave room for buttons */
+  max-height: 85vh; 
+  /* If height is restricted by vh, adjust width to maintain aspect ratio */
+  @media (min-aspect-ratio: 1/1) and (max-height: 900px) {
+     width: 53vh; /* ~ 80vh / 1.5 */
+  }
+
   transition: transform 0.5s;
-  /* Ensure book doesn't touch the top/bottom edges on small landscape screens */
-  margin: auto 0; 
+  /* Push book up slightly to make room for controls */
+  margin-bottom: 5vh; 
 }
 
 /* Paper */
@@ -68,8 +79,8 @@ body {
   left: 0;
   transform-origin: left;
   transition: transform 0.5s;
-  border-radius: 2px;
-  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  border-radius: 3px;
+  box-shadow: 3px 3px 15px rgba(0,0,0,0.15); /* Slightly deeper shadow for scale */
 }
 
 .front {
@@ -82,16 +93,16 @@ body {
   z-index: 0;
 }
 
-/* Inner Content Containers */
+/* Inner Content */
 .front-content,
 .back-content {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-evenly; /* Distributes space better than center */
+  justify-content: space-between; /* Pushes content to edges slightly more */
   align-items: center;
   flex-direction: column;
-  padding: 1rem;
+  padding: 6%; /* Relative padding */
   box-sizing: border-box;
   text-align: center;
   overflow: hidden;
@@ -107,34 +118,37 @@ body {
   transform: rotateY(-180deg);
 }
 
-/* Controls */
+/* Controls - Positioned absolutely at bottom */
 .ctrl-center {
   position: absolute;
-  bottom: 20px; /* Pin to bottom */
+  bottom: 3vh;
   width: 100%;
   display: flex;
   justify-content: center;
   z-index: 100;
+  pointer-events: none; /* Allows clicking through empty space */
 }
 
 button {
+  pointer-events: auto;
   border: none;
   background-color: transparent;
   cursor: pointer;
-  margin: 0 20px;
+  margin: 0 30px;
   padding: 10px;
   transition: transform 0.2s;
 }
 
 button:focus { outline: none; }
-button:active { transform: scale(0.95); }
-button:hover i { color: #4a4a4a; }
+button:active { transform: scale(0.9); }
 
 i {
-  font-size: 50px;
-  color: var(--bg-dark-green); /* Changed to match theme */
-  opacity: 0.8;
-  text-shadow: 0 2px 5px rgba(255, 255, 255, 0.5);
+  font-size: clamp(40px, 8vw, 60px); /* Responsive icon size */
+  color: var(--bg-dark-green);
+  opacity: 0.9;
+  text-shadow: 0 2px 5px rgba(255, 255, 255, 0.6);
+  background: rgba(255,255,255,0.3); /* Slight backdrop for visibility */
+  border-radius: 50%;
 }
 
 /* Book Colors */
@@ -153,140 +167,123 @@ i {
 #p7 { z-index: 2; }
 #p8 { z-index: 1; }
 
-/* ——— TYPOGRAPHY & IMAGES ——— */
+/* ——— TYPOGRAPHY & VISUALS ——— */
 
-/* Cover Title */
+/* Title Page */
 .title {
   font-family: 'Tangerine', cursive;
-  /* Fluid font size relative to the PAGE height, not viewport */
-  font-size: 4rem; 
+  font-size: 10rem; /* Fallback */
+  font-size: clamp(4rem, 16vw, 11rem); /* Huge responsive text */
   font-weight: 700;
-  line-height: 1;
+  line-height: 0.9;
   color: var(--gold);
-  text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  margin-top: auto;
+  margin-bottom: auto;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
-/* General Text inside pages */
+/* Headings inside pages */
 h1 {
-  font-size: clamp(0.9rem, 2.5vh, 1.4rem);
-  margin-bottom: 5px;
-  line-height: 1.2;
+  font-size: clamp(1rem, 3.5vw, 1.8rem);
+  color: var(--bg-dark-green);
+  margin: 0 0 10px 0;
+  line-height: 1.15;
   width: 100%;
 }
 
+/* Paragraphs / Dates */
 p {
-  font-size: clamp(0.7rem, 2vh, 1rem);
-  color: #555;
-  margin-top: 5px;
+  font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+  color: #444;
+  margin-top: auto; /* Pushes date to bottom */
+  margin-bottom: 0;
+  font-weight: 500;
 }
 
+/* Last Page Special Styling */
 #b8 {
-  font-family: cursive;
-  color: var(--gold);
+  justify-content: center;
 }
-
 #b8 h1 {
   color: var(--gold);
-  font-size: 2rem;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  margin-bottom: 2rem;
 }
-
 #b8 p {
-  color: var(--gold);
+  color: #eee;
+  margin-top: 0;
 }
 
+/* Dynamic Text */
 #days-together {
-  font-size: clamp(0.8rem, 2.2vh, 1.2rem);
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
   font-weight: 600;
   color: #333;
   width: 100%;
+  margin-top: 0;
+  margin-bottom: auto;
 }
 
-/* Responsive Image Handling */
+/* Images */
 img {
-  /* Images scale relative to the paper, not the screen */
-  width: auto;
+  width: 100%;
   height: auto;
-  max-width: 95%;
-  max-height: 50%; /* Ensures image never takes more than half the page height */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  object-fit: contain;
+  /* Use flex grow/shrink to fill available space without overflowing */
+  flex-grow: 0;
+  flex-shrink: 1;
+  max-height: 60%; /* Allow image to take up to 60% of page height */
+  object-fit: contain; /* Ensure full image is visible */
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   margin: 5px 0;
 }
 
 /* Cover Image Adjustment */
 #photo1 {
-  max-height: 55%;
+  max-height: 65%;
 }
 
 /* ——— MEDIA QUERIES ——— */
 
-/* Desktop / Large Tablets */
-@media (min-width: 1024px) {
-  .book {
-    width: var(--book-width-desktop);
-    height: var(--book-height-desktop);
-  }
-  
-  .title {
-    font-size: 7rem;
-  }
-  
-  .ctrl-center {
-    bottom: 30px;
-  }
-}
-
-/* Tablets & Landscape Mobile */
+/* Landscape Mode (Tablets/Phones rotated) */
 @media (max-height: 600px) {
   .book {
-    height: 80vh;
-    width: 55vh; /* Maintain aspect ratio based on height */
+    height: 85vh;
+    width: 54vh; /* Maintain approx aspect ratio based on height */
   }
   
   .title {
-    font-size: 18vh;
+    font-size: 25vh;
   }
   
-  img {
-    max-height: 45%;
-  }
-  
-  .ctrl-center {
-    bottom: 10px;
-  }
-  
-  i {
-    font-size: 40px;
-  }
-}
-
-/* Small Phones */
-@media (max-width: 380px) {
-  .book {
-    /* Slightly wider on tiny screens to fit text */
-    width: 44vw; 
-    height: 68vw; 
-  }
-
-  .front-content, .back-content {
-    padding: 0.5rem;
-  }
-
   h1 {
-    font-size: 0.9rem;
+    font-size: 4vh;
   }
   
   p {
-    font-size: 0.7rem;
+    font-size: 3.5vh;
   }
-  
-  i {
-    font-size: 35px;
+
+  .ctrl-center {
+    bottom: 5px;
   }
   
   button {
-    margin: 0 10px;
-    padding: 5px;
+    margin: 0 60px; /* Spread buttons out more in landscape */
+  }
+}
+
+/* Very Small Phones */
+@media (max-width: 360px) {
+  :root {
+    --book-width-mobile: 49vw; /* Push to the limit */
+  }
+  
+  .front-content, .back-content {
+    padding: 4%;
+  }
+  
+  h1 {
+    font-size: 1rem;
   }
 }
