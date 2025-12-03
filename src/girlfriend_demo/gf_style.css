@@ -1,0 +1,292 @@
+/* Declare Global Variables */
+:root {
+  --bg-green: rgb(157, 192, 158);
+  --bg-dark-green: rgb(46, 88, 73);
+  --gold: #c5a028;
+  /* Define aspect ratio for the book (Width:Height) */
+  --book-width-mobile: 43vw;
+  --book-height-mobile: 65vw;
+  --book-width-desktop: 400px;
+  --book-height-desktop: 600px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; /* Prevents scrollbars during flip animation */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  background-color: var(--bg-green);
+  background-image: url("../img/may_svg.svg");
+  background-size: 50px 50px;
+  background-repeat: repeat;
+  background-position: top left;
+}
+
+/* Book Container */
+.book {
+  position: relative;
+  /* Responsive base size for Mobile */
+  width: var(--book-width-mobile);
+  height: var(--book-height-mobile);
+  
+  /* Limits for Desktop */
+  max-width: var(--book-width-desktop);
+  max-height: var(--book-height-desktop);
+  
+  transition: transform 0.5s;
+  /* Ensure book doesn't touch the top/bottom edges on small landscape screens */
+  margin: auto 0; 
+}
+
+/* Paper */
+.paper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  perspective: 1500px;
+}
+
+.front,
+.back {
+  background-color: white;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: left;
+  transition: transform 0.5s;
+  border-radius: 2px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+}
+
+.front {
+  z-index: 1;
+  backface-visibility: hidden;
+  border-left: 3px solid var(--bg-dark-green);
+}
+
+.back {
+  z-index: 0;
+}
+
+/* Inner Content Containers */
+.front-content,
+.back-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly; /* Distributes space better than center */
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+}
+
+.back-content {
+  transform: rotateY(180deg);
+}
+
+/* Paper flip effect */
+.flipped .front,
+.flipped .back {
+  transform: rotateY(-180deg);
+}
+
+/* Controls */
+.ctrl-center {
+  position: absolute;
+  bottom: 20px; /* Pin to bottom */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 0 20px;
+  padding: 10px;
+  transition: transform 0.2s;
+}
+
+button:focus { outline: none; }
+button:active { transform: scale(0.95); }
+button:hover i { color: #4a4a4a; }
+
+i {
+  font-size: 50px;
+  color: var(--bg-dark-green); /* Changed to match theme */
+  opacity: 0.8;
+  text-shadow: 0 2px 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Book Colors */
+#f1, #b1, #f8, #b8 {
+  background-color: var(--bg-dark-green);
+  color: white;
+}
+
+/* Z-Index Ordering */
+#p1 { z-index: 8; }
+#p2 { z-index: 7; }
+#p3 { z-index: 6; }
+#p4 { z-index: 5; }
+#p5 { z-index: 4; }
+#p6 { z-index: 3; }
+#p7 { z-index: 2; }
+#p8 { z-index: 1; }
+
+/* ——— TYPOGRAPHY & IMAGES ——— */
+
+/* Cover Title */
+.title {
+  font-family: 'Tangerine', cursive;
+  /* Fluid font size relative to the PAGE height, not viewport */
+  font-size: 4rem; 
+  font-weight: 700;
+  line-height: 1;
+  color: var(--gold);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+
+/* General Text inside pages */
+h1 {
+  font-size: clamp(0.9rem, 2.5vh, 1.4rem);
+  margin-bottom: 5px;
+  line-height: 1.2;
+  width: 100%;
+}
+
+p {
+  font-size: clamp(0.7rem, 2vh, 1rem);
+  color: #555;
+  margin-top: 5px;
+}
+
+#b8 {
+  font-family: cursive;
+  color: var(--gold);
+}
+
+#b8 h1 {
+  color: var(--gold);
+  font-size: 2rem;
+}
+
+#b8 p {
+  color: var(--gold);
+}
+
+#days-together {
+  font-size: clamp(0.8rem, 2.2vh, 1.2rem);
+  font-weight: 600;
+  color: #333;
+  width: 100%;
+}
+
+/* Responsive Image Handling */
+img {
+  /* Images scale relative to the paper, not the screen */
+  width: auto;
+  height: auto;
+  max-width: 95%;
+  max-height: 50%; /* Ensures image never takes more than half the page height */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  object-fit: contain;
+  margin: 5px 0;
+}
+
+/* Cover Image Adjustment */
+#photo1 {
+  max-height: 55%;
+}
+
+/* ——— MEDIA QUERIES ——— */
+
+/* Desktop / Large Tablets */
+@media (min-width: 1024px) {
+  .book {
+    width: var(--book-width-desktop);
+    height: var(--book-height-desktop);
+  }
+  
+  .title {
+    font-size: 7rem;
+  }
+  
+  .ctrl-center {
+    bottom: 30px;
+  }
+}
+
+/* Tablets & Landscape Mobile */
+@media (max-height: 600px) {
+  .book {
+    height: 80vh;
+    width: 55vh; /* Maintain aspect ratio based on height */
+  }
+  
+  .title {
+    font-size: 18vh;
+  }
+  
+  img {
+    max-height: 45%;
+  }
+  
+  .ctrl-center {
+    bottom: 10px;
+  }
+  
+  i {
+    font-size: 40px;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 380px) {
+  .book {
+    /* Slightly wider on tiny screens to fit text */
+    width: 44vw; 
+    height: 68vw; 
+  }
+
+  .front-content, .back-content {
+    padding: 0.5rem;
+  }
+
+  h1 {
+    font-size: 0.9rem;
+  }
+  
+  p {
+    font-size: 0.7rem;
+  }
+  
+  i {
+    font-size: 35px;
+  }
+  
+  button {
+    margin: 0 10px;
+    padding: 5px;
+  }
+}
